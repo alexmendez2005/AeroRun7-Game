@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<HTA:APPLICATION 
+  ID="NeoCuboApp"
+  APPLICATIONNAME="NEO-CUBO"
+  SCROLL="no"
+  SINGLEINSTANCE="yes"
+  WINDOWSTATE="normal"
+  BORDER="thin"
+  ICON=""
+>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>NEO-CUBO App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #111;
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px #0ff;
+    }
+    input {
+      padding: 12px;
+      font-size: 1.2rem;
+      width: 250px;
+      background: #222;
+      border: 2px solid #0ff;
+      color: #0ff;
+      margin: 15px 0;
+    }
+    button {
+      padding: 12px 30px;
+      background: #0ff;
+      border: none;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #0ff;
+    }
+    #result {
+      margin: 20px;
+      padding: 15px;
+      font-size: 1.3rem;
+      border: 1px solid #0ff;
+      min-width: 300px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>NEO-🅲🆄🅱🅾</h1>
+  <input type="text" id="operation" placeholder="Ej: 987 * 654">
+  <button onclick="calculate()">CALCULAR</button>
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const input = document.getElementById('operation').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
+      
+      // Validación
+      if (!input.includes('*')) {
+        showError('Formato incorrecto: usar "*"');
+        return;
+      }
+      
+      const [num1Str, num2Str] = input.split('*').map(s => s.trim());
+      
+      if (!/^\d+$/.test(num1Str) || !/^\d+$/.test(num2Str)) {
+        showError('Solo números enteros positivos');
+        return;
+      }
+      
+      const num1 = parseInt(num1Str);
+      const num2 = parseInt(num2Str);
+      
+      // Método NEO-CUBO
+      const componentes1 = descomponer(num1);
+      const componentes2 = descomponer(num2);
+      
+      let total = 0;
+      componentes1.forEach(c1 => {
+        componentes2.forEach(c2 => {
+          total += c1 * c2;
+        });
+      });
+      
+      resultDiv.innerHTML = `🔷 RESULTADO: ${total.toLocaleString()}`;
+    }
+
+    function descomponer(num) {
+      return num.toString().split('').map((d, i, arr) => {
+        return parseInt(d) * Math.pow(10, arr.length - 1 - i);
+      });
+    }
+
+    function showError(mensaje) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `❌ ERROR: ${mensaje}`;
+      resultDiv.style.color = '#ff0066';
+      setTimeout(() => {
+        resultDiv.style.color = '#0ff';
+      }, 2000);
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<HTA:APPLICATION 
+  ID="NeoCuboApp"
+  APPLICATIONNAME="NEO-CUBO"
+  SCROLL="no"
+  SINGLEINSTANCE="yes"
+  WINDOWSTATE="normal"
+  BORDER="thin"
+  ICON=""
+>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>NEO-CUBO App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #111;
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px #0ff;
+    }
+    input {
+      padding: 12px;
+      font-size: 1.2rem;
+      width: 250px;
+      background: #222;
+      border: 2px solid #0ff;
+      color: #0ff;
+      margin: 15px 0;
+    }
+    button {
+      padding: 12px 30px;
+      background: #0ff;
+      border: none;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #0ff;
+    }
+    #result {
+      margin: 20px;
+      padding: 15px;
+      font-size: 1.3rem;
+      border: 1px solid #0ff;
+      min-width: 300px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>NEO-🅲🆄🅱🅾</h1>
+  <input type="text" id="operation" placeholder="Ej: 987 * 654">
+  <button onclick="calculate()">CALCULAR</button>
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const input = document.getElementById('operation').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
+      
+      // Validación
+      if (!input.includes('*')) {
+        showError('Formato incorrecto: usar "*"');
+        return;
+      }
+      
+      const [num1Str, num2Str] = input.split('*').map(s => s.trim());
+      
+      if (!/^\d+$/.test(num1Str) || !/^\d+$/.test(num2Str)) {
+        showError('Solo números enteros positivos');
+        return;
+      }
+      
+      const num1 = parseInt(num1Str);
+      const num2 = parseInt(num2Str);
+      
+      // Método NEO-CUBO
+      const componentes1 = descomponer(num1);
+      const componentes2 = descomponer(num2);
+      
+      let total = 0;
+      componentes1.forEach(c1 => {
+        componentes2.forEach(c2 => {
+          total += c1 * c2;
+        });
+      });
+      
+      resultDiv.innerHTML = `🔷 RESULTADO: ${total.toLocaleString()}`;
+    }
+
+    function descomponer(num) {
+      return num.toString().split('').map((d, i, arr) => {
+        return parseInt(d) * Math.pow(10, arr.length - 1 - i);
+      });
+    }
+
+    function showError(mensaje) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `❌ ERROR: ${mensaje}`;
+      resultDiv.style.color = '#ff0066';
+      setTimeout(() => {
+        resultDiv.style.color = '#0ff';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
