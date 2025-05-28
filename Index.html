@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AeroRun 7 © Alexander</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0f0f1a;
+            font-family: 'Arial', sans-serif;
+        }
+        #gameCanvas {
+            display: block;
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #00f7ff;
+            font-size: 20px;
+            text-shadow: 0 0 5px #00f7ff;
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="ui">Puntaje: <span id="score">0</span></div>
+    <div id="logo">AeroRun 7 © Alexander | IG: @7alex.07 🔵</div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 300;
+
+        // Variables del juego
+        let score = 0;
+        let gravity = 1;
+        let isFlipped = false;
+        const player = {
+            x: 100,
+            y: canvas.height - 50,
+            width: 30,
+            height: 50,
+            velY: 0,
+            color: '#00f7ff'
+        };
+
+        const obstacles = [];
+        let gameSpeed = 5;
+
+        // Jetpack
+        let jetpackFuel = 100;
+        let isUsingJetpack = false;
+
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Dibujar jetpack
+            ctx.fillStyle = '#ff00aa';
+            ctx.fillRect(player.x + 25, player.y + 10, 10, 20);
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Aplicar gravedad
+            if (!isUsingJetpack) {
+                player.velY += gravity;
+                player.y += player.velY;
+            } else {
+                player.velY = -3; // Volar hacia arriba
+                jetpackFuel -= 0.5;
+                if (jetpackFuel <= 0) isUsingJetpack = false;
+            }
+
+            // Limitar al suelo/techo
+            if (player.y > canvas.height - player.height) {
+                player.y = canvas.height - player.height;
+                player.velY = 0;
+            } else if (player.y < 0) {
+                player.y = 0;
+                player.velY = 0;
+            }
+
+            // Generar obstáculos
+            if (Math.random() < 0.02) {
+                obstacles.push({
+                    x: canvas.width,
+                    y: isFlipped ? 0 : canvas.height - 30,
+                    width: 20,
+                    height: 30,
+                    color: '#ff5555'
+                });
+            }
+
+            // Dibujar y mover obstáculos
+            obstacles.forEach((obs, index) => {
+                obs.x -= gameSpeed;
+                ctx.fillStyle = obs.color;
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+
+                // Detectar colisión
+                if (
+                    player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y
+                ) {
+                    alert(`Game Over! Puntaje: ${score}`);
+                    document.location.reload();
+                }
+
+                // Eliminar obstáculos fuera de pantalla
+                if (obs.x < -obs.width) {
+                    obstacles.splice(index, 1);
+                    score += 1;
+                    document.getElementById('score').textContent = score;
+                }
+            });
+
+            // Aumentar dificultad
+            if (score % 50 === 0) {
+                gameSpeed += 0.1;
+            }
+
+            drawPlayer();
+            requestAnimationFrame(update);
+        }
+
+        // Controles
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (e.ctrlKey) {
+                    // Invertir gravedad (Ctrl + Espacio)
+                    gravity *= -1;
+                    isFlipped = !isFlipped;
+                } else if (jetpackFuel > 0) {
+                    // Jetpack (Espacio)
+                    isUsingJetpack = true;
+                } else {
+                    // Salto normal
+                    player.velY = -10;
+                }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                isUsingJetpack = false;
+            }
+        });
+
+        update(); // Iniciar juego
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AeroRun 7 © Alexander</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0f0f1a;
+            font-family: 'Arial', sans-serif;
+        }
+        #gameCanvas {
+            display: block;
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #00f7ff;
+            font-size: 20px;
+            text-shadow: 0 0 5px #00f7ff;
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="ui">Puntaje: <span id="score">0</span></div>
+    <div id="logo">AeroRun 7 © Alexander | IG: @7alex.07 🔵</div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 300;
+
+        // Variables del juego
+        let score = 0;
+        let gravity = 1;
+        let isFlipped = false;
+        const player = {
+            x: 100,
+            y: canvas.height - 50,
+            width: 30,
+            height: 50,
+            velY: 0,
+            color: '#00f7ff'
+        };
+
+        const obstacles = [];
+        let gameSpeed = 5;
+
+        // Jetpack
+        let jetpackFuel = 100;
+        let isUsingJetpack = false;
+
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Dibujar jetpack
+            ctx.fillStyle = '#ff00aa';
+            ctx.fillRect(player.x + 25, player.y + 10, 10, 20);
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Aplicar gravedad
+            if (!isUsingJetpack) {
+                player.velY += gravity;
+                player.y += player.velY;
+            } else {
+                player.velY = -3; // Volar hacia arriba
+                jetpackFuel -= 0.5;
+                if (jetpackFuel <= 0) isUsingJetpack = false;
+            }
+
+            // Limitar al suelo/techo
+            if (player.y > canvas.height - player.height) {
+                player.y = canvas.height - player.height;
+                player.velY = 0;
+            } else if (player.y < 0) {
+                player.y = 0;
+                player.velY = 0;
+            }
+
+            // Generar obstáculos
+            if (Math.random() < 0.02) {
+                obstacles.push({
+                    x: canvas.width,
+                    y: isFlipped ? 0 : canvas.height - 30,
+                    width: 20,
+                    height: 30,
+                    color: '#ff5555'
+                });
+            }
+
+            // Dibujar y mover obstáculos
+            obstacles.forEach((obs, index) => {
+                obs.x -= gameSpeed;
+                ctx.fillStyle = obs.color;
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+
+                // Detectar colisión
+                if (
+                    player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y
+                ) {
+                    alert(`Game Over! Puntaje: ${score}`);
+                    document.location.reload();
+                }
+
+                // Eliminar obstáculos fuera de pantalla
+                if (obs.x < -obs.width) {
+                    obstacles.splice(index, 1);
+                    score += 1;
+                    document.getElementById('score').textContent = score;
+                }
+            });
+
+            // Aumentar dificultad
+            if (score % 50 === 0) {
+                gameSpeed += 0.1;
+            }
+
+            drawPlayer();
+            requestAnimationFrame(update);
+        }
+
+        // Controles
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (e.ctrlKey) {
+                    // Invertir gravedad (Ctrl + Espacio)
+                    gravity *= -1;
+                    isFlipped = !isFlipped;
+                } else if (jetpackFuel > 0) {
+                    // Jetpack (Espacio)
+                    isUsingJetpack = true;
+                } else {
+                    // Salto normal
+                    player.velY = -10;
+                }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                isUsingJetpack = false;
+            }
+        });
+
+        update(); // Iniciar juego
+    </script>
+</body>
+</html>
