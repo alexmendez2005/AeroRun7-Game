@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KOMBAT REVOLUTION | by Alexander (@7alex.07)</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Arial Black', sans-serif;
+    }
+    #arena {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+    }
+    #player1, #player2 {
+      width: 150px;
+      height: 250px;
+      position: absolute;
+      bottom: 50px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    #player1 {
+      left: 20%;
+      background-image: url('https://i.imgur.com/XYZ1234.png'); /* Reemplaza con tu sprite */
+    }
+    #player2 {
+      right: 20%;
+      background-image: url('https://i.imgur.com/ABC5678.png'); /* Reemplaza con tu sprite */
+      transform: scaleX(-1);
+    }
+    #health-bars {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
+    #health-bar1, #health-bar2 {
+      width: 40%;
+      height: 30px;
+      background: #333;
+      border: 2px solid #fff;
+    }
+    #health-fill1, #health-fill2 {
+      height: 100%;
+      width: 100%;
+      background: #f00;
+      transition: width 0.3s;
+    }
+    #controls {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 5px;
+      background: #E1306C;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .punch {
+      animation: punch 0.2s ease;
+    }
+    @keyframes punch {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="health-bars">
+    <div id="health-bar1">
+      <div id="health-fill1" style="width: 100%"></div>
+    </div>
+    <div id="health-bar2">
+      <div id="health-fill2" style="width: 100%"></div>
+    </div>
+  </div>
+  
+  <div id="arena">
+    <div id="player1"></div>
+    <div id="player2"></div>
+    
+    <div id="controls">
+      <button onclick="attackPlayer1()">PUNCH (P1)</button>
+      <button onclick="attackPlayer2()">KICK (P2)</button>
+    </div>
+  </div>
+
+  <script>
+    let health1 = 100;
+    let health2 = 100;
+
+    function attackPlayer1() {
+      document.getElementById("player1").classList.add("punch");
+      setTimeout(() => {
+        document.getElementById("player1").classList.remove("punch");
+      }, 200);
+      
+      health2 -= 10;
+      updateHealthBars();
+      checkWinner();
+    }
+
+    function attackPlayer2() {
+      document.getElementById("player2").classList.add("punch");
+      setTimeout(() => {
+        document.getElementById("player2").classList.remove("punch");
+      }, 200);
+      
+      health1 -= 15;
+      updateHealthBars();
+      checkWinner();
+    }
+
+    function updateHealthBars() {
+      document.getElementById("health-fill1").style.width = `${health1}%`;
+      document.getElementById("health-fill2").style.width = `${health2}%`;
+    }
+
+    function checkWinner() {
+      if (health1 <= 0) alert("Player 2 WINS! FATALITY");
+      if (health2 <= 0) alert("Player 1 WINS! FLAWLESS VICTORY");
+    }
+  </script>
+</body>
+</html>
